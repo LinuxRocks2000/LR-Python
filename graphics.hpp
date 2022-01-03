@@ -1,6 +1,8 @@
 // All of this will be workified by autogen.py
 
 void draw_pixel(uint16_t xPos, uint16_t yPos, uint8_t R, uint8_t G, uint8_t B){
+    xPos %= VIDEO_WIDTH; // Make the screen borders scroll
+    yPos %= VIDEO_HEIGHT; // Ditto
     unsigned long pixelPos = (yPos * VIDEO_WIDTH + xPos) * 4;
     frame_buf[pixelPos] = B;
     frame_buf[pixelPos + 1] = G;

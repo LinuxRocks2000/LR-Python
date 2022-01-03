@@ -10,7 +10,7 @@ static PyObject* draw_pixel(PyObject *self, PyObject *args){
 	else{
 		printf("Please check your arguments.\n");
 	}
-	return NULL;
+	return PyLong_FromLong(0);
 }
 
 static PyObject* draw_filled_rectangle(PyObject *self, PyObject *args){
@@ -27,7 +27,7 @@ static PyObject* draw_filled_rectangle(PyObject *self, PyObject *args){
 	else{
 		printf("Please check your arguments.\n");
 	}
-	return NULL;
+	return PyLong_FromLong(0);
 }
 
 static PyObject* draw_stroke_rectangle(PyObject *self, PyObject *args){
@@ -45,7 +45,7 @@ static PyObject* draw_stroke_rectangle(PyObject *self, PyObject *args){
 	else{
 		printf("Please check your arguments.\n");
 	}
-	return NULL;
+	return PyLong_FromLong(0);
 }
 
 static PyObject* draw_filled_circle(PyObject *self, PyObject *args){
@@ -61,7 +61,7 @@ static PyObject* draw_filled_circle(PyObject *self, PyObject *args){
 	else{
 		printf("Please check your arguments.\n");
 	}
-	return NULL;
+	return PyLong_FromLong(0);
 }
 
 static PyObject* draw_stroke_circle(PyObject *self, PyObject *args){
@@ -78,7 +78,7 @@ static PyObject* draw_stroke_circle(PyObject *self, PyObject *args){
 	else{
 		printf("Please check your arguments.\n");
 	}
-	return NULL;
+	return PyLong_FromLong(0);
 }
 
 static PyMethodDef lrpython_functions[] = {

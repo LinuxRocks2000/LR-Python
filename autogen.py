@@ -84,7 +84,7 @@ for x in functions:
     result += "\t}\n\telse{\n"
     result += "\t\tprintf(\"Please check your arguments.\\n\");\n\t}\n"
 
-    result += "\treturn NULL;\n}\n\n" ## Double \n makes it more clean (also becomes unix compliant)
+    result += "\treturn PyLong_FromLong(0);\n}\n\n" ## Double \n makes it more clean. Will eventually return the id number of that object, for move operations.
 
 result += "static PyMethodDef lrpython_functions[] = {\n"
 

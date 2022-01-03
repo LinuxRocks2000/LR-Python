@@ -100,18 +100,21 @@ char** getFileNameAndPath(char *path){
 
 PyObject *filename;
 
-void PyAPI_Run(){
-    PyObject *func = PyObject_GetAttrString(pyFile, "run");
+PyObject *RunROMFunction(char *fname){
+    PyObject *func = PyObject_GetAttrString(pyFile, fname);
     if (func){
-        PyObject_CallObject(func, NULL);
+        PyObject *retval = PyObject_CallObject(func, NULL);
+        if (retval != NULL){
+            return retval;
+        }
+        else{
+            printf("Error executing embedded Python function ");
+            printf(fname);
+            printf(".\n");
+            PyErr_Print();
+        }
     }
-}
-
-void PyAPI_Begin(){
-    PyObject *func = PyObject_GetAttrString(pyFile, "begin");
-    if (func){
-        PyObject_CallObject(func, NULL);
-    }
+    return NULL;
 }
 
 void begin_python(char *path){
@@ -130,14 +133,6 @@ void begin_python(char *path){
     free(fileData[1]);
     free(fileData);
     pyFile = PyImport_Import(filename); // The function frees `filename`, this is thus memory safe
-    if (pyFile){
-       API_Fun_Test  = PyObject_GetAttrString(pyFile, "test");
-       API_Fun_Run   = PyObject_GetAttrString(pyFile, "run");
-       API_Fun_Begin = PyObject_GetAttrString(pyFile, "begin");
-    }
-    else{
-       printf("ROM load FAILURE\n");
-    }
     Py_DECREF(filename); // Clear the reference. This prevents memory leaks.
 }
 
@@ -173,8 +168,8 @@ void retro_set_controller_port_device(unsigned port, unsigned device)
 void retro_get_system_info(struct retro_system_info *info)
 {
    memset(info, 0, sizeof(*info));
-   info->library_name     = "skeleton";
-   info->library_version  = "0.1";
+   info->library_name     = "LibRetro Python";
+   info->library_version  = "1.0"; // feature.bugfix format.
    info->need_fullpath    = true;
    info->valid_extensions = "py";
 }
@@ -289,12 +284,73 @@ static void audio_set_state(bool enable)
    (void)enable;
 }
 
+bool keyA = false;
+bool keyB = false;
+bool keyUp = false;
+bool keyDown = false;
+bool keyLeft = false;
+bool keyRight = false;
+
 void retro_run(void)
 {
     clear(CF_WHITE);
-    PyAPI_Run();
+    RunROMFunction("run");
     unsigned i;
     update_input();
+
+    if ((int)input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A)){
+        RunROMFunction("keydown_A");
+        keyA = true;
+    }
+    else if (keyA){
+        keyA = false;
+        RunROMFunction("keyup_A");
+    }
+
+    if ((int)input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B)){
+        RunROMFunction("keydown_B");
+        keyB = true;
+    }
+    else if (keyB){
+        keyB = false;
+        RunROMFunction("keyup_B");
+    }
+
+    if ((int)input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP)){
+        RunROMFunction("keydown_Up");
+        keyUp = true;
+    }
+    else if (keyUp){
+        keyUp = false;
+        RunROMFunction("keyup_Up");
+    }
+
+    if ((int)input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN)){
+        RunROMFunction("keydown_Down");
+        keyDown = true;
+    }
+    else if (keyUp){
+        keyDown = false;
+        RunROMFunction("keyup_Down");
+    }
+
+    if ((int)input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT)){
+        RunROMFunction("keydown_Left");
+        keyLeft = true;
+    }
+    else if (keyUp){
+        keyLeft = false;
+        RunROMFunction("keyup_Left");
+    }
+
+    if ((int)input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_RIGHT)){
+        RunROMFunction("keydown_Right");
+        keyRight = true;
+    }
+    else if (keyUp){
+        keyRight = false;
+        RunROMFunction("keyup_Right");
+    }
 
     video_cb(frame_buf, VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_WIDTH * sizeof(uint32_t));
 
