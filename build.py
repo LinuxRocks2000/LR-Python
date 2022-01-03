@@ -22,7 +22,7 @@ if not os.system("g++ -c -o core.o core.cpp -fPIC -Ilibretro-common/include -I/u
 else:
     print("Build failed!")
     sys.exit(1)
-if not os.system("g++ -shared -o LibTurd_libretro.so core.o -lpython3.9"):
+if not os.system("g++ -shared -o python_libretro.so core.o -lpython3.9"):
     print("Built core.so shared object.")
 else:
     sys.exit(1)
