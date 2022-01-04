@@ -16,6 +16,7 @@ import sys
 #                print("Build Successful")
 #            else:
 #                print("Build Failed")
+os.system("python3 setPythonInclude.py")
 os.system("python3 autogen.py") ## Run the autogen script
 if not os.system("g++ -c -o core.o core.cpp -fPIC -Ilibretro-common/include -I/usr/include/python3.9 -lpython3.9"):
     print("Built object file, building shared library")
