@@ -1,1 +1,1 @@
-retroarch -L LibTurd_libretro.so $PWD/testRom.py
+retroarch -L python_libretro.so $PWD/testRom.py

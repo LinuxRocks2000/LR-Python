@@ -329,7 +329,7 @@ void retro_run(void)
         RunROMFunction("keydown_Down");
         keyDown = true;
     }
-    else if (keyUp){
+    else if (keyDown){
         keyDown = false;
         RunROMFunction("keyup_Down");
     }
@@ -338,7 +338,7 @@ void retro_run(void)
         RunROMFunction("keydown_Left");
         keyLeft = true;
     }
-    else if (keyUp){
+    else if (keyLeft){
         keyLeft = false;
         RunROMFunction("keyup_Left");
     }
@@ -347,7 +347,7 @@ void retro_run(void)
         RunROMFunction("keydown_Right");
         keyRight = true;
     }
-    else if (keyUp){
+    else if (keyRight){
         keyRight = false;
         RunROMFunction("keyup_Right");
     }
