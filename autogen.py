@@ -11,7 +11,15 @@ argTypes = {} ## Arguments for a currently autogenning function
 functions = {}
 curArgType = ""
 curArgName = ""
-bracketLevel = 0;
+bracketLevel = 0
+
+ctps = {
+    "uint8_t": "b",
+    "int": "h",
+    "uint16_t": "H",
+    "char*": "s"
+}
+
 for x in inputFile.read():
     if stage == 0:
         if x == 'v':
@@ -42,7 +50,8 @@ for x in inputFile.read():
     elif stage == 4:
         if x in [")", ","]:
             stage = 3
-            argTypes[curArgName] = curArgType
+            if (curArgType in ctps):
+                argTypes[curArgName] = curArgType
             curArgType = ""
             curArgName = ""
         else:
@@ -61,11 +70,6 @@ for x in inputFile.read():
             argTypes = {}
 
 result = ""
-ctps = {
-    "uint8_t": "b",
-    "int": "h",
-    "uint16_t": "H"
-}
 
 for x in functions:
     result += "static PyObject* " + x + "(PyObject *self, PyObject *args){\n"
